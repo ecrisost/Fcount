@@ -1,0 +1,30 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY TestTimesTen IS
+	PORT (SW : IN STD_LOGIC_VECTOR(5 downto 0);
+		HEX0 :OUT STD_LOGIC_VECTOR(6 downto 0);
+		HEX1 :OUT STD_LOGIC_VECTOR(6 downto 0);
+		HEX2 :OUT STD_LOGIC_VECTOR(6 downto 0);
+		HEX3 :OUT STD_LOGIC_VECTOR(6 downto 0));
+	--LEDR : OUT STD_LOGIC_VECTOR(7 downto 0));
+END ENTITY TestTimesTen;
+
+ARCHITECTURE Behaviour OF TestTimesTen IS
+Signal A,B,C, D: STD_LOGIC_VECTOR(7 downto 0);
+BEGIN
+
+--INST1: ENTITY work.TimesTen PORT MAP (X(3 downto 0)=> SW(3 downto 0), TenX(7 downto 0)=>LEDR(7 downto 0));
+TimesTenInst1: ENTITY work.TimesTen PORT MAP (X(3 downto 0)=> SW(3 downto 0), TenX(7 downto 0)=>A(7 downto 0));
+SegD1: ENTITY work.SegDecoder PORT MAP(D=>A(7 downto 4), Y=>HEX3);
+
+TimesTenInst2: ENTITY work.TimesTen PORT MAP(X(3 downto 0)=>A(3 downto 0), TenX(7 downto 0)=>B(7 downto 0));
+SegD2: Entity work.SegDecoder port map(D=>B(7 downto 4), Y=>HEX2);
+
+TimesTenInst3: Entity work.TimesTen port map(X(3 downto 0)=>B(3 downto 0), TenX(7 downto 0)=>C(7 downto 0));
+SegD3: Entity work.SegDecoder port map(D=>C(7 downto 4), Y=>HEX1);
+
+TimesTenInst4: Entity work.TimesTen port map(X(3 downto 0)=>C(3 downto 0), TenX(7 downto 0)=>D(7 downto 0));
+SegD4: Entity work.SegDecoder port map(D=>D(7 downto 4), Y=>HEX0);
+
+END ARCHITECTURE Behaviour; 
